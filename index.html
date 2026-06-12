@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DP Sequence Alignment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header-bar">
+    <h1 class="site-title">DP Sequence Alignment</h1>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀️</span>
+    </button>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <h1>Dynamic Programming Sequence Alignment</h1>
+      <p>
+        In bioinformatics, sequence alignment arranges two nucleotide sequences, DNA or RNA,
+        to reveal their similarities, allowing substitutions, insertions and deletions. 
+        The best alignment is the one that maximizes a chosen scoring scheme.
+      </p>
+      <p>
+        Dynamic programming (DP) finds that optimum by breaking the problem into simpler
+        subproblems and reusing their results, instead of testing every possible alignment.
+        The two classic alignment algorithms built on it are Needleman-Wunsch (global) and
+        Smith-Waterman (local).
+      </p>
+    </section>
+
+    <section class="card-grid">
+      <article class="algo-card">
+        <h3>Needleman-Wunsch</h3>
+        <span class="badge">Global Alignment</span>
+        <p>
+          Finds the optimal alignment between two sequences across their
+          <strong>entire length</strong>. It is a global alignment algorithm, best suited to
+          sequences that are similar overall and of comparable length.
+        </p>
+        <a class="btn btn-primary" href="nw.html">Try Needleman-Wunsch →</a>
+      </article>
+
+      <article class="algo-card">
+        <h3>Smith-Waterman</h3>
+        <span class="badge">Local Alignment</span>
+        <p>
+          Finds the optimal alignment between the best-matching
+          <strong>subsequences</strong> of two sequences. It is a local alignment algorithm,
+          best suited to spotting a shared region inside otherwise different sequences.
+        </p>
+        <a class="btn btn-primary" href="sw.html">Try Smith-Waterman →</a>
+      </article>
+    </section>
+
+    <section class="compare-section">
+      <h2>Key Differences</h2>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Needleman-Wunsch</th>
+            <th>Smith-Waterman</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Alignment type</td><td>Global</td><td>Local</td></tr>
+          <tr><td>Initialization</td><td>Gap penalties</td><td>Zeros</td></tr>
+          <tr><td>Traceback start</td><td>Bottom-right cell</td><td>Highest-score cell</td></tr>
+          <tr><td>Traceback end</td><td>Top-left cell</td><td>Cell with score 0</td></tr>
+          <tr><td>Best for</td><td>Similar full-length sequences</td><td>Finding conserved regions</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smith-Waterman · DP Sequence Alignment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header-bar">
+    <a class="back-link" href="index.html">← Back to Home</a>
+    <h1 class="site-title">Smith-Waterman</h1>
+    <span style="width:40px"></span>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">Smith-Waterman Algorithm</h1>
+
+    <details class="description" open>
+      <summary>Smith-Waterman Algorithm</summary>
+      <div class="desc-body">
+        <p>
+          The Smith-Waterman algorithm finds the optimal alignment of the best matching
+          <strong>subsequences</strong> between two sequences: it is a local alignment
+          algorithm.
+        </p>
+        <p>It operates in three steps:</p>
+        <ol>
+          <li>
+            <strong>Initialization</strong>: a matrix of size
+            <code>(sequence1_length + 1) × (sequence2_length + 1)</code> is created. The first
+            row and column are set to 0.
+          </li>
+          <li>
+            <strong>Fill the matrix</strong>:
+            <pre>Score[i,j] = max(
+    score[i-1, j-1] + s(aᵢ, bⱼ),     # diagonal (match/mismatch)
+    score[i-1, j]   + gap_penalty,   # top      (gap in sequence 2)
+    score[i, j-1]   + gap_penalty,   # left     (gap in sequence 1)
+    0                                # ensures local alignment
+)</pre>
+          </li>
+          <li>
+            <strong>Traceback</strong>: starting from the highest-scoring cell, the path is
+            followed back until a 0 is reached, identifying the best local match.
+          </li>
+        </ol>
+        <p>
+          The scoring scheme assigns values to matches, mismatches and gaps, the same as in
+          Needleman-Wunsch. The key difference is the inclusion of 0 as a minimum, which
+          prevents negative scores and confines the alignment to the best-matching region.
+        </p>
+      </div>
+    </details>
+
+    <div class="work-area">
+      <div class="controls-col">
+        <div class="panel">
+          <h3>Controls</h3>
+          <div class="control-row">
+            <div class="field">
+              <label for="seq1">Sequence 1</label>
+              <input type="text" id="seq1" value="GATTACA" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="seq2">Sequence 2</label>
+              <input type="text" id="seq2" value="GCATGCT" autocomplete="off" />
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="field">
+              <label for="matchScore">Match</label>
+              <input type="number" id="matchScore" value="1" />
+            </div>
+            <div class="field">
+              <label for="mismatchPenalty">Mismatch</label>
+              <input type="number" id="mismatchPenalty" value="-1" />
+            </div>
+            <div class="field">
+              <label for="gapPenalty">Gap</label>
+              <input type="number" id="gapPenalty" value="-1" />
+            </div>
+          </div>
+
+          <div class="error-msg" id="errorMsg"></div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="runBtn">Run Alignment</button>
+            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+          </div>
+
+          <div class="chips-label">Example sequences</div>
+          <div class="chips" id="chips">
+            <button class="chip" data-s1="GATTACA" data-s2="GCATGCT">GATTACA / GCATGCT</button>
+            <button class="chip" data-s1="ACGT" data-s2="ACT">ACGT / ACT</button>
+            <button class="chip" data-s1="AGTACG" data-s2="ACATAG">AGTACG / ACATAG</button>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:24px">
+          <h3>Optimal Paths</h3>
+          <div class="paths-count" id="pathsCount">Run an alignment to see paths.</div>
+          <div class="paths-list" id="pathsList"></div>
+          <hr class="divider" />
+          <h3>Alignment Result</h3>
+          <div id="alignmentArea">
+            <p class="placeholder">Select a path to view its alignment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="matrix-col">
+        <div class="panel">
+          <h3>Scoring Matrix</h3>
+          <div class="matrix-wrap" id="matrixWrap">
+            <p class="placeholder">Run an alignment to build the matrix.</p>
+          </div>
+          <div class="legend">
+            <span><span class="swatch on-path"></span> On an optimal path</span>
+            <span><span class="swatch selected"></span> Selected path</span>
+            <span><span class="swatch start"></span> Max-score / start cell</span>
+          </div>
+          <div class="cell-detail" id="cellDetail">
+            <p class="placeholder">Click any matrix cell to see how its score was computed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="common.js"></script>
+  <script src="sw.js"></script>
+</body>
+</html>
