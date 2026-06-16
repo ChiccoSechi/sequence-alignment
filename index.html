@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DP Sequence Alignment</title>
+  <title>Sequence Alignment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,7 +17,7 @@
 </head>
 <body>
   <header class="header-bar">
-    <h1 class="site-title">DP Sequence Alignment</h1>
+    <h1 class="site-title">Sequence Alignment</h1>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
       <span class="icon-moon">🌙</span>
       <span class="icon-sun">☀️</span>
@@ -82,6 +82,34 @@
           <tr><td>Best for</td><td>Similar full-length sequences</td><td>Finding conserved regions</td></tr>
         </tbody>
       </table>
+    </section>
+
+    <section class="hero">
+      <h1>Sequence Alignment using Heuristics</h1>
+      <p>
+        Dynamic programming finds the optimal alignment, but it runs in O(n × m) time and
+        space: every cell of the matrix must be computed and stored. At genome scale, with
+        billions of base pairs and millions of reads, that cost becomes prohibitive.
+      </p>
+      <p>
+        A heuristic gives up the guarantee of an optimal answer to stay fast and practical at
+        that scale, focusing expensive computation only where it is likely to pay off. FASTA is
+        one of the classic examples for sequence similarity search.
+      </p>
+    </section>
+
+    <section class="card-grid" style="grid-template-columns:minmax(0,600px); justify-content:center;">
+      <article class="algo-card">
+        <h3>FASTA</h3>
+        <span class="badge">Seed and Extend</span>
+        <p>
+          Searches for regions of similarity between a query and a sequence database. It follows
+          the seed-and-extend strategy: rather than aligning everything, it anchors on short
+          exact matches to spot promising regions, then computes a full local alignment only
+          around the best diagonal it finds. Fast and approximate, instead of exhaustive.
+        </p>
+        <a class="btn btn-primary" href="fasta.html">Try FASTA →</a>
+      </article>
     </section>
   </div>
 
